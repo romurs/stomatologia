@@ -1,0 +1,341 @@
+@font-face {
+  font-family: "Ubuntu";
+  src: url("./Ubuntu-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Ubuntu";
+  src: url("./Ubuntu-LightItalic.ttf") format("truetype");
+  font-weight: 300;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Ubuntu";
+  src: url("./Ubuntu-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Ubuntu";
+  src: url("./Ubuntu-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Ubuntu";
+  src: url("./Ubuntu-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Ubuntu";
+  src: url("./Ubuntu-MediumItalic.ttf") format("truetype");
+  font-weight: 500;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Ubuntu";
+  src: url("./Ubuntu-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Ubuntu";
+  src: url("./Ubuntu-BoldItalic.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
+}
+
+:root {
+  /* ===== Брендовые цвета ===== */
+  --title100: #009ed6; /* основной синий бренда */
+  --subtitle100: #e6312e; /* акцентный красный бренда */
+
+  --color-primary: #009ed6;
+  --color-primary-600: #0089ba;
+  --color-primary-700: #086e96;
+  --color-primary-100: #e3f5fc;
+  --color-primary-50: #f2fafd;
+
+  --color-accent: #e6312e;
+  --color-accent-600: #c72420;
+  --color-accent-100: #fdeae9;
+
+  --color-success: #1fae64;
+  --color-warning: #f5a524;
+
+  /* ===== Нейтральные ===== */
+  --color-ink: #10222c;
+  --color-text: #45585f;
+  --color-text-muted: #7d8e94;
+  --color-white: #ffffff;
+  --color-bg: #f3f8fa;
+  --color-surface: #ffffff;
+  --color-surface-alt: #eef6f9;
+  --color-border: #e0ebee;
+
+  /* обратная совместимость со старыми переменными, используемыми в части компонентов */
+  --body-color: var(--color-bg);
+  --color-main-page: var(--color-bg);
+  --elements-bg-color: var(--color-primary);
+  --on-element-hover-color: var(--color-primary-600);
+  --title-color: var(--color-white);
+  --color-gray: var(--color-text-muted);
+  --color-red: var(--color-accent);
+  --color-black: #000000;
+
+  /* ===== Геометрия ===== */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --container-width: 1200px;
+
+  /* ===== Тени ===== */
+  --shadow-sm: 0 2px 8px rgba(16, 34, 44, 0.06);
+  --shadow-md: 0 8px 24px rgba(16, 34, 44, 0.08);
+  --shadow-lg: 0 20px 48px rgba(16, 34, 44, 0.12);
+  --shadow-primary: 0 12px 28px rgba(0, 158, 214, 0.28);
+  --shadow-accent: 0 12px 28px rgba(230, 49, 46, 0.28);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Ubuntu", sans-serif;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+a {
+  font-family: "Ubuntu", sans-serif;
+  text-decoration: none;
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--color-ink);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+p {
+  color: var(--color-text);
+  line-height: 1.55;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  font-family: "Ubuntu", sans-serif;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== Утилиты layout ===== */
+.wrap {
+  width: 100%;
+  max-width: var(--container-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+
+  @media (max-width: 720px) {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+.section {
+  padding: 64px 0;
+
+  @media (max-width: 720px) {
+    padding: 40px 0;
+  }
+}
+
+.section-head {
+  text-align: center;
+  max-width: 620px;
+  margin: 0 auto 40px;
+
+  .eyebrow {
+    display: inline-block;
+    color: var(--color-primary);
+    background: var(--color-primary-100);
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    margin-bottom: 12px;
+  }
+
+  p {
+    font-size: 1.02rem;
+  }
+
+  @media (max-width: 720px) {
+    margin-bottom: 28px;
+  }
+}
+
+/* ===== Кнопки ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: 999px;
+  padding: 14px 26px;
+  font-weight: 700;
+  font-size: 0.98rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--color-accent);
+  color: var(--color-white);
+  box-shadow: var(--shadow-accent);
+}
+.btn-primary:hover {
+  background: var(--color-accent-600);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: var(--color-white);
+  color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
+}
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--color-white);
+  border: 2px solid rgba(255, 255, 255, 0.65);
+}
+.btn-outline:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.btn-ghost {
+  background: var(--color-primary-100);
+  color: var(--color-primary-700);
+}
+.btn-ghost:hover {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.btn-sm {
+  padding: 10px 18px;
+  font-size: 0.88rem;
+}
+
+/* ===== Карточки ===== */
+.card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.badge-primary {
+  background: var(--color-primary-100);
+  color: var(--color-primary-700);
+}
+
+.badge-accent {
+  background: var(--color-accent-100);
+  color: var(--color-accent-600);
+}
+
+.badge-success {
+  background: #e6f8ee;
+  color: var(--color-success);
+}
+
+/* страницы с "юридическим"/текстовым контентом используют этот контейнер */
+.page-content {
+  max-width: 900px;
+  margin: 0 auto;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+  padding: 40px 48px;
+
+  @media (max-width: 720px) {
+    padding: 24px 20px;
+    border-radius: var(--radius-md);
+  }
+}
+
+.fade-up-enter-active {
+  transition: all 0.35s ease;
+}
+.fade-up-enter-from {
+  opacity: 0;
+  transform: translateY(12px);
+}
