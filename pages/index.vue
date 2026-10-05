@@ -1,6 +1,6 @@
 <script setup lang="ts">
 useHead({
-  title: "Стоматология «Для Вас» в Йошкар-Оле | Запись онлайн",
+  title: "Стоматология «Для Вас» | Запись онлайн",
   meta: [
     {
       name: "description",
@@ -20,7 +20,7 @@ useHead({
     <PagesIndexCostCalculator />
     <PagesIndexPromotions />
     <PagesIndexDoctorsPreview />
-    <PagesIndexBeforeAfter />
+    <!-- <PagesIndexBeforeAfter /> -->
     <PagesIndexReviews />
     <PagesIndexFaqAccordion />
     <PagesIndexNews />

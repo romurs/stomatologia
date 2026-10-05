@@ -41,20 +41,6 @@ const toggleMenu = () => {
   </transition>
 
   <header :class="{ 'header-scrolled': isScrolled }">
-    <div class="topbar">
-      <div class="wrap topbar__inner">
-        <div class="topbar__info">
-          <span>ПН–ПТ 09:00–20:00, СБ 09:00–16:00</span>
-          <span class="dot">•</span>
-          <span>Йошкар-Ола, ул. Строителей, 1Б</span>
-        </div>
-        <div class="topbar__actions">
-          <a href="tel:+78362733333">+7 (8362) 73-33-33</a>
-          <NuxtLink to="/booking" class="topbar__cta">Записаться онлайн</NuxtLink>
-        </div>
-      </div>
-    </div>
-
     <div class="mainbar">
       <div class="wrap header-container">
         <HeaderLogo :isScrolled="false" />

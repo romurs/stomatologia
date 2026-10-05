@@ -28,7 +28,7 @@ import StickyCallBar from "./components/StickyCallBar.vue";
 
 main {
   flex: 1 0 auto;
-  padding-top: 108px;
+  padding-top: 72px;
 
   @media (max-width: 1000px) {
     padding-top: 64px;

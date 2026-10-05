@@ -2,7 +2,6 @@
 import F7AlarmFill from "~/assets/icons/F7AlarmFill.svg";
 import F7PhoneFillArrowDownLeft from "~/assets/icons/F7PhoneFillArrowDownLeft.svg";
 import F7PlacemarkFill from "~/assets/icons/F7PlacemarkFill.svg";
-import EmailIcon from "~/assets/icons/EmailIcon.svg";
 </script>
 
 <template>
@@ -11,15 +10,13 @@ import EmailIcon from "~/assets/icons/EmailIcon.svg";
       <div class="footer-grid">
         <div class="footer-col footer-about">
           <NuxtLink to="/" class="footer-logo">
-            <img src="/Logo_White.svg" alt="Стоматология «Для Вас»" />
+            <img src="/main_logo2.png" alt="Стоматология «Для Вас»" />
           </NuxtLink>
           <p class="footer-about__text">
             Стоматологическая клиника «Для Вас», ООО «Сто процентов». Лечение, протезирование и имплантация с 2008 года.
           </p>
           <div class="footer-social">
-            <a href="https://vk.com/" target="_blank" rel="noopener" aria-label="ВКонтакте">VK</a>
-            <a href="https://wa.me/79027437080" target="_blank" rel="noopener" aria-label="WhatsApp">WA</a>
-            <a href="https://t.me/" target="_blank" rel="noopener" aria-label="Telegram">TG</a>
+            <a href="https://vk.ru/stomatologiya_dlya__vas" target="_blank" rel="noopener" aria-label="ВКонтакте">VK</a>
           </div>
         </div>
 
@@ -45,27 +42,21 @@ import EmailIcon from "~/assets/icons/EmailIcon.svg";
         <div class="footer-col">
           <h4>Контакты</h4>
           <div class="date_container">
-            <FooterDateText text="ПН–ПТ 09:00–20:00; СБ 09:00–16:00">
+            <FooterDateText text="ПН–ПТ 09:00–20:00; СБ 09:00–16:00; ВС Выходной">
               <template #icon>
-                <F7AlarmFill width="14" />
+                <F7AlarmFill width="24" />
               </template>
             </FooterDateText>
 
             <FooterDateText text="+7 (8362) 73-33-33" link="tel:+78362733333">
               <template #icon>
-                <F7PhoneFillArrowDownLeft width="14" />
+                <F7PhoneFillArrowDownLeft width="24" />
               </template>
             </FooterDateText>
 
             <FooterDateText text="г. Йошкар-Ола, ул. Строителей, 1Б, 2 этаж">
               <template #icon>
-                <F7PlacemarkFill width="14" />
-              </template>
-            </FooterDateText>
-
-            <FooterDateText text="stoprots@yandex.ru" link="mailto:stoprots@yandex.ru">
-              <template #icon>
-                <EmailIcon width="14" />
+                <F7PlacemarkFill width="24" />
               </template>
             </FooterDateText>
           </div>
@@ -91,7 +82,7 @@ footer {
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.6fr 1fr 1fr 1.2fr;
+  grid-template-columns: 1.4fr 1fr 1fr 1.4fr;
   gap: 32px;
   padding-bottom: 32px;
 
@@ -129,7 +120,7 @@ footer {
 
 .footer-logo {
   display: inline-block;
-  width: 9rem;
+  width: 16rem;
   margin-bottom: 14px;
 }
 

@@ -31,14 +31,6 @@
           </div>
         </div>
 
-        <div class="map-section__row">
-          <span class="map-section__icon">✉️</span>
-          <div>
-            <strong>Email</strong>
-            <p><a href="mailto:stoprots@yandex.ru">stoprots@yandex.ru</a></p>
-          </div>
-        </div>
-
         <NuxtLink to="/booking" class="btn btn-primary btn-block">Записаться на приём</NuxtLink>
       </div>
 

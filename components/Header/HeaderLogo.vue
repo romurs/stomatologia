@@ -10,13 +10,9 @@ defineProps({
   <div class="header_logo">
     <NuxtLink to="/">
       <div
-        class="logo logo_white"
+        class="logo"
         :class="{ 'logo-scrolled': isScrolled }"
-      ></div>
-      <div
-        class="logo logo_color"
-        :class="{ 'logo-scrolled': isScrolled }"
-      ></div>
+      > <img class="logo" src="/main_logo3.png" alt=""> </div>
     </NuxtLink>
   </div>
 </template>
@@ -27,45 +23,22 @@ defineProps({
     position: relative;
     align-items: center;
     width: 12rem;
+    transition: all 0.3s ease;
+    z-index: 1000;
   }
 
   .logo {
-    position: absolute;
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
     height: 100%;
     width: 100%;
     transition: all 0.3s ease;
-  }
-
-  .logo_color {
-    opacity: 0;
-    &.logo-scrolled {
-      background-image: url(/Short_Logo_Color.svg);
-    }
-    &:not(.logo-scrolled) {
-      background-image: url(/Logo_Color.svg);
-    }
-  }
-
-  .logo_white {
-    &.logo-scrolled {
-      background-image: url(/Short_Logo_White.svg);
-    }
-    &:not(.logo-scrolled) {
-      background-image: url(/Logo_White.svg);
-    }
+    z-index: 1000;
   }
 
   .header_logo:hover {
     scale: 1.1;
-    .logo_color {
-      opacity: 1;
-    }
-    .logo {
-      transform: rotate(-3deg);
-    }
     transition: all 0.3s ease;
   }
 }
@@ -73,11 +46,11 @@ defineProps({
   .header_logo {
     position: relative;
     align-items: center;
-    width: 6rem;
+    width: 52rem;
+    z-index: 1000;
   }
 
   .logo {
-    position: absolute;
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
