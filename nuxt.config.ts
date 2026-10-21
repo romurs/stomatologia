@@ -7,7 +7,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     apiSecret: "", // приватные (только на сервере)
     public: {
-      apiUrl: process.env.NUXT_API_URL || "http://dev.s1dorftp.ru:8000/api/"
+      apiUrl: process.env.NUXT_API_URL || "http://localhost:8000/api"
     }
   }
 })

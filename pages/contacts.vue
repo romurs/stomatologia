@@ -43,9 +43,11 @@ const legalRows = [
           <p><a href="tel:+78362733333">+7 (8362) 73-33-33</a><br /><a href="tel:+79027437080">+7 902 743-70-80</a></p>
         </div>
         <div class="contacts-cards__item card">
-          <span class="contacts-cards__icon">✉️</span>
-          <strong>Email</strong>
-          <p><a href="mailto:stoprots@yandex.ru">stoprots@yandex.ru</a></p>
+          <span class="contacts-cards__icon">
+            <img src="/VK Logo.svg" alt="eVK">
+          </span>
+          <strong>Группа ВКонтакте</strong>
+          <p><a href="https://vk.ru/stomatologiya_dlya__vas">Стоматология для Вас</a></p>
         </div>
       </div>
 
@@ -59,7 +61,7 @@ const legalRows = [
             allowfullscreen="true"
           ></iframe>
         </div>
-        <PagesContactsContactForm />
+        <!-- <PagesContactsContactForm /> -->
       </div>
 
       <div class="page-content contacts-legal">
@@ -123,11 +125,17 @@ const legalRows = [
 
 .contacts-cards__icon {
   font-size: 1.6rem;
+  img {
+    max-width: 1.6rem;
+    margin: 0 auto;
+  }
 }
 
 .contacts-layout {
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
+  // grid-template-columns: 1.2fr 1fr;
+  max-width: 900px;
+  margin: 0 auto;
   gap: 20px;
   margin-bottom: 32px;
 

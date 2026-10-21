@@ -102,10 +102,10 @@ onMounted(() => {
         <p v-if="filteredCategories.length === 0" class="price-empty">Ничего не найдено, попробуйте другой запрос</p>
       </div>
 
-      <div class="price-footnote">
+      <!-- <div class="price-footnote">
         <p>Прейскурант терапевтического отделения утверждён приказом №3 от 16.03.2021.</p>
         <p>Актуальность цен уточняйте у администратора: <a href="tel:+78362733333">+7 (8362) 73-33-33</a></p>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

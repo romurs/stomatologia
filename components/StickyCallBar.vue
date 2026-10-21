@@ -9,10 +9,10 @@
       <span class="sticky-bar__icon">📞</span>
       <span>Позвонить</span>
     </a>
-    <a href="https://wa.me/79027437080" target="_blank" rel="noopener" class="sticky-bar__item">
+    <!-- <a href="https://wa.me/79027437080" target="_blank" rel="noopener" class="sticky-bar__item">
       <span class="sticky-bar__icon">💬</span>
       <span>WhatsApp</span>
-    </a>
+    </a> -->
     <NuxtLink to="/booking" class="sticky-bar__item sticky-bar__item--accent">
       <span class="sticky-bar__icon">🗓️</span>
       <span>Записаться</span>

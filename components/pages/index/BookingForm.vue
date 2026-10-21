@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { data: serviceCategories } = await useServices();
-const { data: doctors } = await useDoctors();
+// const { data: doctors } = await useDoctors();
 
 const props = withDefaults(
   defineProps<{
@@ -35,9 +35,9 @@ const submitError = ref("");
 const isSubmitted = ref(false);
 const isSubmitting = ref(false);
 
-const timeSlots = ["09:00", "10:30", "12:00", "13:30", "15:00", "16:30", "18:00", "19:30"];
+// const timeSlots = ["09:00", "10:30", "12:00", "13:30", "15:00", "16:30", "18:00", "19:30"];
 
-const minDate = computed(() => new Date().toISOString().split("T")[0]);
+// const minDate = computed(() => new Date().toISOString().split("T")[0]);
 
 const formatPhoneInput = (event: Event) => {
   const target = event.target as HTMLInputElement;
@@ -138,7 +138,7 @@ const resetForm = () => {
               </optgroup>
             </select>
           </div>
-          <div class="booking-form__field">
+          <!-- <div class="booking-form__field">
             <label>Врач</label>
             <select v-model="doctorSlug">
               <option value="">Любой свободный врач</option>
@@ -146,10 +146,10 @@ const resetForm = () => {
                 {{ doctor.name }} — {{ doctor.specialty }}
               </option>
             </select>
-          </div>
+          </div> -->
         </div>
 
-        <div class="booking-form__row">
+        <!-- <div class="booking-form__row">
           <div class="booking-form__field">
             <label>Удобная дата</label>
             <input type="date" v-model="date" :min="minDate" />
@@ -161,7 +161,7 @@ const resetForm = () => {
               <option v-for="slot in timeSlots" :key="slot" :value="slot">{{ slot }}</option>
             </select>
           </div>
-        </div>
+        </div> -->
 
         <div class="booking-form__field">
           <label>Комментарий</label>

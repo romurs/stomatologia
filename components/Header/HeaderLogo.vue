@@ -46,7 +46,7 @@ defineProps({
   .header_logo {
     position: relative;
     align-items: center;
-    width: 52rem;
+    width: 36rem;
     z-index: 1000;
   }
 
