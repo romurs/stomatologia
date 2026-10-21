@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { serviceCategories } from "~/data/services";
-import { doctors } from "~/data/doctors";
+const { data: serviceCategories } = await useServices();
+const { data: doctors } = await useDoctors();
 
 const props = withDefaults(
   defineProps<{
@@ -21,8 +21,17 @@ const date = ref("");
 const time = ref("");
 const comment = ref("");
 const agree = ref(false);
+const website = ref(""); // поле-ловушка для ботов, человек его не видит
+
+// Из калькулятора приходит список услуг через запятую — его нет среди пунктов, показываем отдельной опцией
+const isCustomService = computed(
+  () =>
+    !!props.presetService &&
+    !serviceCategories.value.some((c) => c.items.some((item) => item.title === props.presetService))
+);
 
 const errors = ref<Record<string, string>>({});
+const submitError = ref("");
 const isSubmitted = ref(false);
 const isSubmitting = ref(false);
 
@@ -60,8 +69,9 @@ const submit = async (event: Event) => {
   if (!validate()) return;
 
   isSubmitting.value = true;
+  submitError.value = "";
 
-  const payload = {
+  const result = await submitLead("/appointments/", {
     name: name.value.trim(),
     phone: phone.value.trim(),
     service: service.value,
@@ -69,17 +79,16 @@ const submit = async (event: Event) => {
     date: date.value,
     time: time.value,
     comment: comment.value.trim(),
-  };
-
-  // TODO(backend): нет эндпоинта для записи на приём.
-  // Когда появится API, заменить блок ниже на реальный запрос, например:
-  // const config = useRuntimeConfig();
-  // await $fetch(`${config.public.apiUrl}/appointments/`, { method: "POST", body: payload });
-  console.log("Заявка на запись (заглушка, нужен бэкенд):", payload);
-  await new Promise((resolve) => setTimeout(resolve, 500));
+    website: website.value,
+  });
 
   isSubmitting.value = false;
-  isSubmitted.value = true;
+  if (result.ok) {
+    isSubmitted.value = true;
+  } else {
+    errors.value = result.fieldErrors;
+    submitError.value = result.message;
+  }
 };
 
 const resetForm = () => {
@@ -123,6 +132,7 @@ const resetForm = () => {
             <label>Услуга</label>
             <select v-model="service">
               <option value="">Не выбрано / уточню на месте</option>
+              <option v-if="isCustomService" :value="presetService">{{ presetService }}</option>
               <optgroup v-for="category in serviceCategories" :key="category.slug" :label="category.title">
                 <option v-for="item in category.items" :key="item.title" :value="item.title">{{ item.title }}</option>
               </optgroup>
@@ -164,6 +174,20 @@ const resetForm = () => {
         </label>
         <span class="field-error-text" v-if="errors.agree">{{ errors.agree }}</span>
 
+        <input
+          v-model="website"
+          type="text"
+          name="website"
+          class="booking-form__trap"
+          tabindex="-1"
+          autocomplete="off"
+          aria-hidden="true"
+        />
+
+        <p class="booking-form__submit-error" v-if="submitError">
+          {{ submitError }} <a href="tel:+78362733333">+7 (8362) 73-33-33</a>
+        </p>
+
         <button type="submit" class="btn btn-primary btn-block" :disabled="isSubmitting">
           {{ isSubmitting ? "Отправляем..." : "Записаться на приём" }}
         </button>
@@ -187,6 +211,25 @@ const resetForm = () => {
 </template>
 
 <style scoped lang="scss">
+.booking-form__trap {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.booking-form__submit-error {
+  color: var(--color-accent);
+  font-size: 0.86rem;
+  margin-bottom: 14px;
+
+  a {
+    font-weight: 700;
+    white-space: nowrap;
+  }
+}
+
 .booking-form {
   padding: 28px;
   max-width: 640px;

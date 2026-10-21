@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { symptoms, urgencyLabels } from "~/data/symptoms";
-import { serviceCategories } from "~/data/services";
+
+const { data: serviceCategories } = await useServices();
 
 const selectedId = ref<string | null>(null);
 
 const selected = computed(() => symptoms.find((s) => s.id === selectedId.value) ?? null);
 
 const selectedCategory = computed(() =>
-  selected.value ? serviceCategories.find((c) => c.slug === selected.value!.categorySlug) : null
+  selected.value ? serviceCategories.value.find((c) => c.slug === selected.value!.categorySlug) : null
 );
 
 const select = (id: string) => {

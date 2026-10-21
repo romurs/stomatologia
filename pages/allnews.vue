@@ -1,70 +1,40 @@
 <script setup lang="ts">
 import NewsItem from "@/components/pages/index/NewsItem.vue";
+import type { News } from "~/types/api";
 
 useHead({
   title: "Новости | Стоматология «Для Вас»",
   meta: [{ name: "allnews", content: "Все новости стоматологии «Для вас»" }],
 });
 
-interface News {
-  id: number;
-  title: string;
-  content: string;
-  created_at: string;
-  image?: string;
-}
+const apiUrl = useApiUrl();
 
-interface ApiResponse {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: News[];
-}
+const { data: firstPage } = await useAsyncData("news-all", () =>
+  fetchNewsPage(`${apiUrl}/news/`).catch((err) => {
+    console.error("Новости: бэкенд недоступен", err);
+    return null;
+  })
+);
 
-const config = useRuntimeConfig();
-const apiUrl = config.public.apiUrl;
-
-const newsList = ref<News[]>([]);
-const nextPage = ref<string | null>(null);
+const newsList = ref<News[]>(firstPage.value?.results ?? []);
+const nextPage = ref<string | null>(firstPage.value?.next ?? null);
 const loading = ref(false);
 
-const loadNews = async (url?: string) => {
+const loadMore = async () => {
+  if (!nextPage.value) return;
   try {
     loading.value = true;
-
-    const data = await $fetch<ApiResponse>(url || `${apiUrl}/news/`);
-
+    const data = await fetchNewsPage(nextPage.value);
     newsList.value = [...newsList.value, ...data.results];
     nextPage.value = data.next;
   } catch (err) {
-    // TODO(backend): бэкенд новостей ещё не поднят на этом окружении
-    console.error("Новости: бэкенд недоступен", err);
+    console.error("Новости: не удалось загрузить следующую страницу", err);
   } finally {
     loading.value = false;
   }
 };
 
-await loadNews();
-
-const loadMore = () => {
-  if (nextPage.value) {
-    loadNews(nextPage.value);
-  }
-};
-
 const hasNextPage = computed(() => !!nextPage.value);
-
-const shortDiscription = (content: string) => {
-  if (!content) return "";
-
-  const sentenceEnd = content.match(/[.!?…]/);
-
-  if (sentenceEnd) {
-    return content.substring(0, sentenceEnd.index! + 1);
-  }
-
-  return content.length > 100 ? content.substring(0, 100) + "..." : content;
-};
 </script>
 
 <template>
@@ -76,9 +46,9 @@ const shortDiscription = (content: string) => {
         <NewsItem
           v-for="news in newsList"
           :key="news.id"
-          :image="news.image || '/placeholder-news.jpg'"
+          :image="news.image || NEWS_PLACEHOLDER_IMAGE"
           :title="news.title"
-          :discription="shortDiscription(news.content)"
+          :discription="newsExcerpt(news.content)"
           :date="news.created_at"
           :id="news.id"
         />

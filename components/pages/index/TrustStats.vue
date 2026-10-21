@@ -1,10 +1,23 @@
 <script setup lang="ts">
-const stats = [
-  { value: "15+", label: "лет на рынке Йошкар-Олы" },
-  { value: "8 000+", label: "пациентов" },
-  { value: "6", label: "врачей разных специализаций" },
-  { value: "4.9", label: "средняя оценка пациентов" },
-];
+const FOUNDED_YEAR = 2008;
+
+const { data: doctors } = await useDoctors();
+const { data: reviews } = await useReviews();
+
+const stats = computed(() => {
+  const years = new Date().getFullYear() - FOUNDED_YEAR;
+  const doctorsCount = doctors.value.length;
+  const rating = reviews.value.average_rating;
+  return [
+    { value: String(years), label: `${plural(years, ["год", "года", "лет"])} на рынке Йошкар-Олы` },
+    { value: "8 000+", label: "пациентов" },
+    doctorsCount && {
+      value: String(doctorsCount),
+      label: `${plural(doctorsCount, ["врач", "врача", "врачей"])} разных специализаций`,
+    },
+    rating && { value: rating.toFixed(1), label: "средняя оценка пациентов" },
+  ].filter((stat): stat is { value: string; label: string } => Boolean(stat));
+});
 </script>
 
 <template>

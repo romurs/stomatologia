@@ -4,72 +4,10 @@ useHead({
   meta: [{ name: "description", content: "Лицензии, устав и другие документы стоматологической клиники «Для Вас»." }],
 });
 
-interface DocumentItem {
-  id: number;
-  title: string;
-  file: string;
-}
+const { data: allCategories } = await useDocumentCategories();
 
-interface CategoryResponse {
-  id: number;
-  name: string;
-  documents: DocumentItem[];
-}
-
-const config = useRuntimeConfig();
-const apiUrl = config.public.apiUrl;
-
-const remoteCategories = ref<CategoryResponse[]>([]);
-const isLoading = ref(true);
-const hasBackend = ref(false);
-
-// Список ниже отображается всегда — это то, что по закону обязано быть на сайте клиники.
-// TODO(backend): подключить реальные сканы документов через GET /api/categories/ (см. попытку загрузки ниже)
-// и загрузку файлов через админку; пока показываем структуру без самих сканов.
-const fallbackCategories: CategoryResponse[] = [
-  {
-    id: 1,
-    name: "Учредительные документы",
-    documents: [
-      { id: 1, title: "Устав ООО «Сто процентов»", file: "" },
-      { id: 2, title: "Свидетельство ОГРН", file: "" },
-      { id: 3, title: "Свидетельство ИНН/КПП", file: "" },
-    ],
-  },
-  {
-    id: 2,
-    name: "Лицензии",
-    documents: [
-      { id: 4, title: "Лицензия на осуществление медицинской деятельности", file: "" },
-      { id: 5, title: "Приложение к лицензии (перечень работ и услуг)", file: "" },
-    ],
-  },
-  {
-    id: 3,
-    name: "Права пациента",
-    documents: [
-      { id: 6, title: "Прейскурант на платные медицинские услуги", file: "/documents" },
-      { id: 7, title: "Правила предоставления платных медицинских услуг", file: "" },
-      { id: 8, title: "Информация для потребителей (Закон «О защите прав потребителей»)", file: "" },
-    ],
-  },
-];
-
-onMounted(async () => {
-  try {
-    const data = await $fetch<CategoryResponse[]>(`${apiUrl}/categories/`);
-    if (Array.isArray(data) && data.length > 0) {
-      remoteCategories.value = data.filter((cat) => cat.documents?.length > 0);
-      hasBackend.value = true;
-    }
-  } catch (err) {
-    console.error("Документы: бэкенд недоступен, показываем список-заглушку", err);
-  } finally {
-    isLoading.value = false;
-  }
-});
-
-const categories = computed(() => (hasBackend.value ? remoteCategories.value : fallbackCategories));
+// Разделы без загруженных файлов не показываем
+const categories = computed(() => allCategories.value.filter((category) => category.documents.length > 0));
 </script>
 
 <template>
@@ -81,12 +19,11 @@ const categories = computed(() => (hasBackend.value ? remoteCategories.value : f
         по законодательству РФ.
       </p>
 
-      <div v-if="!hasBackend" class="documents-page__notice">
-        Сканы документов ещё не загружены в систему — сейчас показана структура разделов.
-        <br />TODO: подключить файлы через бэкенд/админку.
+      <div v-if="!categories.length" class="documents-page__notice">
+        Документы скоро появятся на этой странице. Ознакомиться с ними можно в клинике у администратора.
       </div>
 
-      <div class="documents-groups" v-if="!isLoading">
+      <div class="documents-groups" v-else>
         <div class="documents-group" v-for="category in categories" :key="category.id">
           <h2>{{ category.name }}</h2>
           <div class="documents-grid">
@@ -94,7 +31,7 @@ const categories = computed(() => (hasBackend.value ? remoteCategories.value : f
               v-for="doc in category.documents"
               :key="doc.id"
               :title="doc.title"
-              :file="doc.file || undefined"
+              :file="doc.file"
             />
           </div>
         </div>

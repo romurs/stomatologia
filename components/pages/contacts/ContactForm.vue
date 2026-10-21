@@ -2,7 +2,10 @@
 const name = ref("");
 const contact = ref("");
 const message = ref("");
+const agree = ref(false);
+const website = ref(""); // поле-ловушка для ботов
 const isSubmitted = ref(false);
+const isSubmitting = ref(false);
 const error = ref("");
 
 const submit = async (event: Event) => {
@@ -13,18 +16,25 @@ const submit = async (event: Event) => {
     error.value = "Заполните, пожалуйста, все поля";
     return;
   }
+  if (!agree.value) {
+    error.value = "Нужно согласие на обработку персональных данных";
+    return;
+  }
 
-  // TODO(backend): эндпоинта для обратной связи ещё нет.
-  // Когда появится API, заменить на реальный запрос, например:
-  // const config = useRuntimeConfig();
-  // await $fetch(`${config.public.apiUrl}/feedback/`, { method: "POST", body: { name: name.value, contact: contact.value, message: message.value } });
-  console.log("Обращение через форму контактов (заглушка, нужен бэкенд):", {
-    name: name.value,
-    contact: contact.value,
-    message: message.value,
+  isSubmitting.value = true;
+  const result = await submitLead("/feedback/", {
+    name: name.value.trim(),
+    contact: contact.value.trim(),
+    message: message.value.trim(),
+    website: website.value,
   });
+  isSubmitting.value = false;
 
-  isSubmitted.value = true;
+  if (result.ok) {
+    isSubmitted.value = true;
+  } else {
+    error.value = result.message;
+  }
 };
 </script>
 
@@ -37,8 +47,15 @@ const submit = async (event: Event) => {
         <input type="text" v-model="name" placeholder="Ваше имя" />
         <input type="text" v-model="contact" placeholder="Телефон или email для ответа" />
         <textarea v-model="message" rows="4" placeholder="Ваш вопрос"></textarea>
+        <label class="contact-form__agree">
+          <input type="checkbox" v-model="agree" />
+          <span>Согласен(а) на обработку персональных данных</span>
+        </label>
+        <input v-model="website" type="text" name="website" class="contact-form__trap" tabindex="-1" autocomplete="off" aria-hidden="true" />
         <p class="contact-form__error" v-if="error">{{ error }}</p>
-        <button type="submit" class="btn btn-primary btn-block">Отправить</button>
+        <button type="submit" class="btn btn-primary btn-block" :disabled="isSubmitting">
+          {{ isSubmitting ? "Отправляем..." : "Отправить" }}
+        </button>
       </form>
     </div>
     <div v-else class="contact-form__success">
@@ -49,6 +66,31 @@ const submit = async (event: Event) => {
 </template>
 
 <style scoped lang="scss">
+.contact-form__agree {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.84rem;
+  color: var(--color-text-muted);
+  margin-bottom: 14px;
+  cursor: pointer;
+
+  input {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    accent-color: var(--color-primary);
+  }
+}
+
+.contact-form__trap {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
 .contact-form {
   padding: 28px;
 

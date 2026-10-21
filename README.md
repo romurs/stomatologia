@@ -1,75 +1,36 @@
-# Nuxt Minimal Starter
+# Сайт стоматологии «Для Вас» (Nuxt 3)
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Все данные — услуги и цены, врачи, акции, новости, документы, отзывы, FAQ — приходят с бэкенда
+`stomatologia-back` (Django) и редактируются в его админке. Заявки с форм записи и «Остались вопросы?»
+уходят туда же.
 
-## Setup
+## Запуск
 
-Make sure to install dependencies:
+Сначала запустите бэкенд (см. README в `stomatologia-back`), затем:
 
 ```bash
-# npm
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
 npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+Сайт: http://localhost:3000. Адрес API по умолчанию — `http://localhost:8000/api`.
 
-Build the application for production:
+## Адрес бэкенда
+
+- При сборке: переменная `NUXT_API_URL` (см. `.env.example`).
+- Без пересборки, при запуске собранного сайта: `NUXT_PUBLIC_API_URL`.
 
 ```bash
-# npm
 npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+NUXT_PUBLIC_API_URL=https://api.example.ru/api node .output/server/index.mjs
 ```
 
-Locally preview production build:
+## Где что лежит
 
-```bash
-# npm
-npm run preview
+| Путь | Что там |
+|---|---|
+| `composables/useApi.ts` | Загрузка данных с API (`useServices`, `useDoctors`, `usePromotions`, `useReviews`, `useFaq`, `useDocumentCategories`) и отправка заявок `submitLead` |
+| `types/api.ts` | Типы ответов API |
+| `data/symptoms.ts` | Подсказки «Что вас беспокоит?» — клиентская логика, не из админки |
 
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Если бэкенд недоступен, страницы не падают: разделы без данных просто скрываются.

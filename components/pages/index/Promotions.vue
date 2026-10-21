@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { promotions } from "~/data/promotions";
+const { data: promotions } = await usePromotions();
 </script>
 
 <template>
@@ -11,19 +11,34 @@ import { promotions } from "~/data/promotions";
         <p>Уточняйте детали и срок действия у администратора при записи</p>
       </div>
 
-      <div class="promotions__grid">
-        <div class="promotions__card card" v-for="promo in promotions" :key="promo.title">
-          <div class="promotions__badge">{{ promo.badge }}</div>
+      <div class="promotions__grid" v-if="promotions.length">
+        <div class="promotions__card card" v-for="promo in promotions" :key="promo.id">
+          <img v-if="promo.image" :src="promo.image" :alt="promo.title" class="promotions__image" />
+          <div class="promotions__badge" v-if="promo.badge">{{ promo.badge }}</div>
           <h3>{{ promo.title }}</h3>
           <p>{{ promo.description }}</p>
           <span class="promotions__until" v-if="promo.until">{{ promo.until }}</span>
         </div>
       </div>
+      <p v-else class="promotions__empty">Сейчас действующих акций нет — следите за новостями клиники.</p>
     </div>
   </section>
 </template>
 
 <style scoped lang="scss">
+.promotions__image {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  margin-bottom: 12px;
+}
+
+.promotions__empty {
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
 .promotions {
   background: var(--color-surface-alt);
   border-radius: var(--radius-xl);

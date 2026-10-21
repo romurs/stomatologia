@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { serviceCategories } from "~/data/services";
-
 useHead({
   title: "Прайс-лист | Стоматология «Для Вас»",
   meta: [
@@ -11,10 +9,12 @@ useHead({
   ],
 });
 
+const { data: serviceCategories } = await useServices();
+
 const route = useRoute();
 const search = ref("");
 
-const openSlugs = ref<Set<string>>(new Set([serviceCategories[0].slug]));
+const openSlugs = ref<Set<string>>(new Set(serviceCategories.value.slice(0, 1).map((c) => c.slug)));
 
 const isOpen = (slug: string) => openSlugs.value.has(slug);
 
@@ -31,8 +31,8 @@ const toggle = (slug: string) => {
 const normalizedSearch = computed(() => search.value.trim().toLowerCase());
 
 const filteredCategories = computed(() => {
-  if (!normalizedSearch.value) return serviceCategories;
-  return serviceCategories
+  if (!normalizedSearch.value) return serviceCategories.value;
+  return serviceCategories.value
     .map((category) => ({
       ...category,
       items: category.items.filter((item) => item.title.toLowerCase().includes(normalizedSearch.value)),
@@ -42,7 +42,7 @@ const filteredCategories = computed(() => {
 
 onMounted(() => {
   const hash = route.hash?.replace("#", "");
-  if (hash && serviceCategories.some((c) => c.slug === hash)) {
+  if (hash && serviceCategories.value.some((c) => c.slug === hash)) {
     openSlugs.value = new Set([hash]);
     nextTick(() => {
       document.getElementById(hash)?.scrollIntoView({ behavior: "smooth", block: "start" });

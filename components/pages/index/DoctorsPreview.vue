@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { doctors } from "~/data/doctors";
+const { data: doctors } = await useDoctors();
 
-const preview = doctors.slice(0, 3);
+const preview = computed(() => doctors.value.slice(0, 3));
 </script>
 
 <template>
-  <section class="section">
+  <section class="section" v-if="preview.length">
     <div class="wrap">
       <div class="section-head">
         <span class="eyebrow">Команда</span>

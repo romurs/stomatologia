@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { doctors } from "~/data/doctors";
+const { data: doctors } = await useDoctors();
 
 useHead({
   title: "Врачи | Стоматология «Для Вас»",

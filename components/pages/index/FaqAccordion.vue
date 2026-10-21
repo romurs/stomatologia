@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { faqItems } from "~/data/faq";
+const { data: faqItems } = await useFaq();
 
 const openIndex = ref<number | null>(0);
 
@@ -9,7 +9,7 @@ const toggle = (index: number) => {
 </script>
 
 <template>
-  <section class="section">
+  <section class="section" v-if="faqItems.length">
     <div class="wrap">
       <div class="section-head">
         <span class="eyebrow">Вопросы и ответы</span>
@@ -17,7 +17,7 @@ const toggle = (index: number) => {
       </div>
 
       <div class="faq">
-        <div class="faq__item card" v-for="(item, index) in faqItems" :key="item.question">
+        <div class="faq__item card" v-for="(item, index) in faqItems" :key="item.id">
           <button class="faq__question" @click="toggle(index)" :aria-expanded="openIndex === index">
             {{ item.question }}
             <span class="faq__icon">{{ openIndex === index ? "−" : "+" }}</span>

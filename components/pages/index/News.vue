@@ -1,52 +1,23 @@
 <script setup lang="ts">
-const config = useRuntimeConfig();
-const apiUrl = config.public.apiUrl;
+import type { News, Paginated } from "~/types/api";
 
-interface News {
-  id: number;
-  title: string;
-  content: string;
-  created_at: string;
-  image?: string;
-}
+const apiUrl = useApiUrl();
 
-interface ApiResponse {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: News[];
-}
-
-const newsList = ref<News[]>([]);
-
-// TODO(backend): бэкенд новостей ещё не поднят на этом окружении — запрос ниже
-// просто тихо падает в catch, и на странице остаётся только статичная демо-новость.
-const loadNews = async () => {
-  try {
-    const data = await $fetch<ApiResponse>(`${apiUrl}/news/?page_size=3`);
-    newsList.value = data.results;
-  } catch (err) {
-    console.error("Новости: бэкенд недоступен", err);
-  }
-};
-
-await loadNews();
-
-const shortDiscription = (content: string) => {
-  if (!content) return "";
-
-  const sentenceEnd = content.match(/[.!?…]/);
-
-  if (sentenceEnd) {
-    return content.substring(0, sentenceEnd.index! + 1);
-  }
-
-  return content.length > 100 ? content.substring(0, 100) + "..." : content;
-};
+const { data: newsList } = await useAsyncData(
+  "news-preview",
+  () =>
+    $fetch<Paginated<News>>(`${apiUrl}/news/?page_size=3`)
+      .then((data) => data.results)
+      .catch((err) => {
+        console.error("Новости: бэкенд недоступен", err);
+        return [] as News[];
+      }),
+  { default: () => [] as News[] }
+);
 </script>
 
 <template>
-  <section class="section">
+  <section class="section" v-if="newsList.length">
     <div class="wrap">
       <div class="section-head">
         <span class="eyebrow">Клиника</span>
@@ -55,22 +26,11 @@ const shortDiscription = (content: string) => {
 
       <div class="news-grid">
         <PagesIndexNewsItem
-          image="/sl1.jpg"
-          title="Стоматологическая клиника «Для Вас» открыла двери в 2008 году"
-          :discription="
-            shortDiscription(
-              'Уже более 15 лет клиника работает над тем, чтобы лечение было максимально комфортным и безболезненным. Используем сертифицированные материалы и современное оборудование, а врачи регулярно проходят курсы повышения квалификации.'
-            )
-          "
-          date="2026-05-16"
-          :id="1"
-        />
-        <PagesIndexNewsItem
           v-for="news in newsList"
           :key="news.id"
-          :image="news.image || '/placeholder-news.jpg'"
+          :image="news.image || NEWS_PLACEHOLDER_IMAGE"
           :title="news.title"
-          :discription="shortDiscription(news.content)"
+          :discription="newsExcerpt(news.content)"
           :date="news.created_at"
           :id="news.id"
         />

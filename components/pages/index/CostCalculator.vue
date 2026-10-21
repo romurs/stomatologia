@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { serviceCategories, type PriceItem } from "~/data/services";
+import type { PriceItem } from "~/types/api";
 
-const activeCategorySlug = ref(serviceCategories[0].slug);
+const { data: serviceCategories } = await useServices();
+
+const activeCategorySlug = ref(serviceCategories.value[0]?.slug ?? "");
 const activeCategory = computed(
-  () => serviceCategories.find((c) => c.slug === activeCategorySlug.value) ?? serviceCategories[0]
+  () => serviceCategories.value.find((c) => c.slug === activeCategorySlug.value) ?? serviceCategories.value[0]
 );
 
 const selectedTitles = ref<Set<string>>(new Set());
@@ -31,7 +33,7 @@ const estimateFromNote = (note?: string): number => {
 
 const selectedItems = computed(() => {
   const result: (PriceItem & { category: string })[] = [];
-  for (const category of serviceCategories) {
+  for (const category of serviceCategories.value) {
     for (const item of category.items) {
       if (selectedTitles.value.has(itemKey(category.slug, item.title))) {
         result.push({ ...item, category: category.title });
@@ -57,7 +59,7 @@ const bookingHref = computed(() => {
 </script>
 
 <template>
-  <section id="calculator" class="section calculator">
+  <section id="calculator" class="section calculator" v-if="activeCategory">
     <div class="wrap">
       <div class="section-head">
         <span class="eyebrow">Полезный сервис</span>

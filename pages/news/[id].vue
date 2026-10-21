@@ -1,17 +1,29 @@
 <script setup lang="ts">
-useHead({
-  title: "Новость | Стоматология «Для Вас»",
-});
+import type { News } from "~/types/api";
 
 const route = useRoute();
+const router = useRouter();
 const newsId = route.params.id;
 const hasHistory = ref(false);
+const apiUrl = useApiUrl();
 
-const router = useRouter();
+const { data: news, status, error: fetchError } = await useAsyncData(`news-${newsId}`, () =>
+  $fetch<News>(`${apiUrl}/news/${newsId}/`)
+);
+
+const loading = computed(() => status.value === "pending");
+const error = computed(() => {
+  if (!fetchError.value) return null;
+  return fetchError.value.statusCode === 404 ? "Новость не найдена" : "Не удалось загрузить новость";
+});
+
+useHead(() => ({
+  title: `${news.value?.title ?? "Новость"} | Стоматология «Для Вас»`,
+  meta: news.value ? [{ name: "description", content: newsExcerpt(news.value.content) }] : [],
+}));
 
 onMounted(() => {
   hasHistory.value = window.history.length > 2;
-  loadNews();
 });
 
 const goBack = () => {
@@ -19,38 +31,6 @@ const goBack = () => {
     router.go(-1);
   } else {
     router.push("/allnews");
-  }
-};
-
-interface News {
-  id: number;
-  title: string;
-  content: string;
-  created_at: string;
-  updated_at: string;
-  image?: string;
-}
-
-const config = useRuntimeConfig();
-const apiUrl = config.public.apiUrl;
-
-const news = ref<News | null>(null);
-const loading = ref(true);
-const error = ref<string | null>(null);
-
-// TODO(backend): бэкенд новостей ещё не поднят на этом окружении, поэтому здесь будет ошибка,
-// пока не появится реальный GET /api/news/:id/.
-const loadNews = async () => {
-  try {
-    loading.value = true;
-    error.value = null;
-    const response = await $fetch<News>(`${apiUrl}/news/${newsId}/`);
-    news.value = response;
-  } catch (err) {
-    console.error("Ошибка загрузки новости:", err);
-    error.value = "Не удалось загрузить новость";
-  } finally {
-    loading.value = false;
   }
 };
 

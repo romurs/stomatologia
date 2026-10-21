@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { reviews, averageRating } from "~/data/reviews";
+const { data } = await useReviews();
+const reviews = computed(() => data.value.results);
+const averageRating = computed(() => data.value.average_rating);
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -8,12 +10,12 @@ const formatDate = (dateString: string) => {
 </script>
 
 <template>
-  <section class="section reviews">
+  <section class="section reviews" v-if="reviews.length">
     <div class="wrap">
       <div class="section-head">
         <span class="eyebrow">Отзывы</span>
         <h2>Что говорят пациенты</h2>
-        <p>
+        <p v-if="averageRating">
           Средняя оценка
           <strong>{{ averageRating }}</strong>
           из 5 на основе отзывов пациентов
@@ -21,7 +23,7 @@ const formatDate = (dateString: string) => {
       </div>
 
       <div class="reviews__grid">
-        <div class="reviews__card card" v-for="review in reviews" :key="review.name + review.date">
+        <div class="reviews__card card" v-for="review in reviews" :key="review.id">
           <div class="reviews__stars" aria-hidden="true">
             <span v-for="n in 5" :key="n" :class="{ 'reviews__star--filled': n <= review.rating }">★</span>
           </div>

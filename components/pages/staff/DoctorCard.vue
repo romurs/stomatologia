@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Doctor } from "~/data/doctors";
+import type { Doctor } from "~/types/api";
 
 const props = defineProps<{ doctor: Doctor }>();
 
@@ -22,8 +22,8 @@ const initials = computed(() =>
       <h3>{{ doctor.name }}</h3>
       <p class="doctor-card__specialty">{{ doctor.specialty }}</p>
       <ul class="doctor-card__meta">
-        <li>Стаж: {{ doctor.experience }} лет</li>
-        <li>{{ doctor.education }}</li>
+        <li v-if="doctor.experience">Стаж: {{ pluralYears(doctor.experience) }}</li>
+        <li v-if="doctor.education">{{ doctor.education }}</li>
       </ul>
       <NuxtLink :to="`/booking?doctor=${doctor.slug}`" class="btn btn-ghost btn-sm btn-block">
         Записаться к врачу

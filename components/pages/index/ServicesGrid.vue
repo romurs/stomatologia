@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { serviceCategories } from "~/data/services";
+const { data: serviceCategories } = await useServices();
 </script>
 
 <template>
