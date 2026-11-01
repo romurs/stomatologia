@@ -2,6 +2,10 @@
 import F7AlarmFill from "~/assets/icons/F7AlarmFill.svg";
 import F7PhoneFillArrowDownLeft from "~/assets/icons/F7PhoneFillArrowDownLeft.svg";
 import F7PlacemarkFill from "~/assets/icons/F7PlacemarkFill.svg";
+import FooterDateText from "./Footer/FooterDateText.vue";
+
+const { openSettings: openCookieSettings } = useCookieConsent();
+const year = new Date().getFullYear();
 </script>
 
 <template>
@@ -13,10 +17,10 @@ import F7PlacemarkFill from "~/assets/icons/F7PlacemarkFill.svg";
             <img src="/main_logo2.png" alt="Стоматология «Для Вас»" />
           </NuxtLink>
           <p class="footer-about__text">
-            Стоматологическая клиника «Для Вас», ООО «Сто процентов». Лечение, протезирование и имплантация с 2008 года.
+            Стоматологическая клиника «Для Вас». Лечение, протезирование и имплантация с {{ CLINIC.foundedYear }} года.
           </p>
           <div class="footer-social">
-            <a href="https://vk.ru/stomatologiya_dlya__vas" target="_blank" rel="noopener" aria-label="ВКонтакте">VK</a>
+            <a :href="CLINIC.vk" target="_blank" rel="noopener" aria-label="Группа ВКонтакте">VK</a>
           </div>
         </div>
 
@@ -36,25 +40,28 @@ import F7PlacemarkFill from "~/assets/icons/F7PlacemarkFill.svg";
             <li><NuxtLink to="/documents">Документы и лицензии</NuxtLink></li>
             <li><NuxtLink to="/contacts">Контакты и реквизиты</NuxtLink></li>
             <li><NuxtLink to="/allnews">Новости</NuxtLink></li>
+            <li><NuxtLink to="/privacy">Политика обработки персональных данных</NuxtLink></li>
+            <li><NuxtLink to="/consent">Согласие на обработку персональных данных</NuxtLink></li>
+            <li><NuxtLink to="/cookies">Политика использования cookie</NuxtLink></li>
           </ul>
         </div>
 
         <div class="footer-col">
           <h4>Контакты</h4>
           <div class="date_container">
-            <FooterDateText text="ПН–ПТ 09:00–20:00; СБ 09:00–16:00; ВС Выходной">
+            <FooterDateText :text="clinicHoursText()">
               <template #icon>
                 <F7AlarmFill width="24" />
               </template>
             </FooterDateText>
 
-            <FooterDateText text="+7 (8362) 73-33-33" link="tel:+78362733333">
+            <FooterDateText :text="CLINIC.phone.text" :link="CLINIC.phone.href">
               <template #icon>
                 <F7PhoneFillArrowDownLeft width="24" />
               </template>
             </FooterDateText>
 
-            <FooterDateText text="г. Йошкар-Ола, ул. Строителей, 1Б, 2 этаж">
+            <FooterDateText :text="CLINIC.addressShort">
               <template #icon>
                 <F7PlacemarkFill width="24" />
               </template>
@@ -63,10 +70,31 @@ import F7PlacemarkFill from "~/assets/icons/F7PlacemarkFill.svg";
         </div>
       </div>
 
-      <div class="footer-bottom">
-        <p>© {{ new Date().getFullYear() }} ООО «Сто процентов». Все права защищены.</p>
-        <p class="footer-disclaimer">Есть противопоказания, необходима консультация специалиста.</p>
+      <div class="footer-owner">
+        <h4>Сведения о владельце сайта</h4>
+        <p>
+          {{ CLINIC.fullName }} ({{ CLINIC.shortName }}).
+          ОГРН {{ CLINIC.ogrn }}, ИНН {{ CLINIC.inn }}, КПП {{ CLINIC.kpp }}.
+        </p>
+        <p>Юридический адрес: {{ CLINIC.legalAddress }}.</p>
+        <p>Адрес осуществления деятельности: {{ CLINIC.address }}.</p>
+        <p>
+          Телефон: <a :href="CLINIC.phone.href">{{ CLINIC.phone.text }}</a><template v-if="CLINIC.email">, e-mail: <a :href="`mailto:${CLINIC.email}`">{{ CLINIC.email }}</a></template>.
+          Директор — {{ CLINIC.director }}.
+        </p>
+        <p v-if="CLINIC.license">
+          Лицензия на осуществление медицинской деятельности {{ CLINIC.license }}<template v-if="CLINIC.licenseIssuer">, выдана: {{ CLINIC.licenseIssuer }}</template>.
+        </p>
       </div>
+
+      <div class="footer-bottom">
+        <p>© {{ CLINIC.foundedYear }}–{{ year }} {{ CLINIC.shortName }}. Все права защищены.</p>
+        <button type="button" class="footer-cookie-btn" @click="openCookieSettings">Настройки cookie</button>
+      </div>
+
+      <p class="footer-disclaimer">
+        Имеются противопоказания. Необходима консультация специалиста.
+      </p>
     </div>
   </footer>
 </template>
@@ -159,6 +187,55 @@ footer {
   color: rgba(255, 255, 255, 0.85);
 }
 
+.footer-owner {
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 18px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  h4 {
+    color: #fff;
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+
+  a {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: underline;
+  }
+}
+
+.footer-cookie-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.78rem;
+  text-decoration: underline;
+  cursor: pointer;
+
+  &:hover {
+    color: #fff;
+  }
+}
+
+.footer-disclaimer {
+  text-align: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: clamp(0.95rem, 1.6vw, 1.2rem);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  padding: 14px 0 22px;
+}
+
 .footer-bottom {
   border-top: 1px solid rgba(255, 255, 255, 0.14);
   padding: 18px 0;
@@ -166,7 +243,12 @@ footer {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 8px;
+  align-items: center;
   color: rgba(255, 255, 255, 0.6);
   font-size: 0.78rem;
+
+  p {
+    color: inherit;
+  }
 }
 </style>

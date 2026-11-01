@@ -11,7 +11,7 @@
           <span class="map-section__icon">📍</span>
           <div>
             <strong>Адрес</strong>
-            <p>Республика Марий Эл, г. Йошкар-Ола, ул. Строителей, 1Б, 2 этаж</p>
+            <p>{{ CLINIC.address }}</p>
           </div>
         </div>
 
@@ -19,7 +19,7 @@
           <span class="map-section__icon">🕒</span>
           <div>
             <strong>Режим работы</strong>
-            <p>ПН–ПТ 09:00–20:00, СБ 09:00–16:00, ВС — выходной</p>
+            <p>{{ clinicHoursText() }}</p>
           </div>
         </div>
 
@@ -27,7 +27,7 @@
           <span class="map-section__icon">📞</span>
           <div>
             <strong>Телефон</strong>
-            <p><a href="tel:+78362733333">+7 (8362) 73-33-33</a>, <a href="tel:+79027437080">+7 902 743-70-80</a></p>
+            <p><a :href="CLINIC.phone.href">{{ CLINIC.phone.text }}</a>, <a :href="CLINIC.phone2.href">{{ CLINIC.phone2.text }}</a></p>
           </div>
         </div>
 
@@ -35,13 +35,7 @@
       </div>
 
       <div class="map-section__map">
-        <iframe
-          src="https://yandex.ru/map-widget/v1/?ll=47.832581%2C56.639343&mode=poi&poi%5Bpoint%5D=47.832481%2C56.639388&poi%5Buri%5D=ymapsbm1%3A%2F%2Forg%3Foid%3D1331474234&z=17"
-          width="100%"
-          height="100%"
-          frameborder="0"
-          allowfullscreen="true"
-        ></iframe>
+        <YandexMap />
       </div>
     </div>
   </section>

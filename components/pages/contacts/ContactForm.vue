@@ -47,10 +47,7 @@ const submit = async (event: Event) => {
         <input type="text" v-model="name" placeholder="Ваше имя" />
         <input type="text" v-model="contact" placeholder="Телефон или email для ответа" />
         <textarea v-model="message" rows="4" placeholder="Ваш вопрос"></textarea>
-        <label class="contact-form__agree">
-          <input type="checkbox" v-model="agree" />
-          <span>Согласен(а) на обработку персональных данных</span>
-        </label>
+        <ConsentCheckbox v-model="agree" />
         <input v-model="website" type="text" name="website" class="contact-form__trap" tabindex="-1" autocomplete="off" aria-hidden="true" />
         <p class="contact-form__error" v-if="error">{{ error }}</p>
         <button type="submit" class="btn btn-primary btn-block" :disabled="isSubmitting">

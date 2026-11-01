@@ -339,3 +339,132 @@ ul {
   opacity: 0;
   transform: translateY(12px);
 }
+
+/* =====================================================================
+   Версия для слабовидящих (классы на <html> ставит useAccessibility)
+   ===================================================================== */
+html.a11y-fs-1 {
+  font-size: 100%;
+}
+html.a11y-fs-2 {
+  font-size: 150%;
+}
+html.a11y-fs-3 {
+  font-size: 200%;
+}
+
+/* при крупном шрифте прячем второстепенное в шапке, чтобы она не ломалась */
+html.a11y-fs-2,
+html.a11y-fs-3 {
+  .header-cta__phone {
+    display: none;
+  }
+}
+
+html.a11y {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  p,
+  li {
+    line-height: 1.7;
+  }
+
+  a:not(.btn) {
+    text-decoration: underline;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 3px solid currentColor !important;
+    outline-offset: 2px;
+  }
+}
+
+/* межбуквенный интервал */
+html.a11y-ls-2 body {
+  letter-spacing: 0.08em;
+  word-spacing: 0.12em;
+}
+html.a11y-ls-3 body {
+  letter-spacing: 0.16em;
+  word-spacing: 0.24em;
+}
+
+/* шрифт */
+html.a11y-font-serif body,
+html.a11y-font-serif body *:not(.a11y-panel, .a11y-panel *) {
+  font-family: Georgia, "Times New Roman", serif !important;
+}
+
+/* изображения */
+html.a11y-img-gray {
+  img,
+  iframe,
+  video,
+  svg {
+    filter: grayscale(1) !important;
+  }
+}
+html.a11y-img-off {
+  img,
+  video,
+  .news-card__img,
+  .hero__visual {
+    display: none !important;
+  }
+}
+
+/* цветовые схемы */
+html.a11y-scheme-bw {
+  --a11y-bg: #ffffff;
+  --a11y-fg: #000000;
+}
+html.a11y-scheme-wb {
+  --a11y-bg: #000000;
+  --a11y-fg: #ffffff;
+}
+html.a11y-scheme-blue {
+  --a11y-bg: #9dd1ff;
+  --a11y-fg: #063462;
+}
+html.a11y-scheme-beige {
+  --a11y-bg: #f7f3d6;
+  --a11y-fg: #4d4b43;
+}
+
+html.a11y:not(.a11y-scheme-default) {
+  background: var(--a11y-bg) !important;
+
+  body,
+  body *:not(.a11y-panel, .a11y-panel *) {
+    background-color: var(--a11y-bg) !important;
+    background-image: none !important;
+    color: var(--a11y-fg) !important;
+    border-color: var(--a11y-fg) !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  header,
+  .card,
+  .btn,
+  input,
+  select,
+  textarea,
+  .sticky-bar,
+  .cookie-banner__inner {
+    border: 2px solid var(--a11y-fg) !important;
+  }
+
+  svg {
+    fill: var(--a11y-fg);
+  }
+}

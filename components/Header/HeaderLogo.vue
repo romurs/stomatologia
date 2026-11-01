@@ -12,7 +12,7 @@ defineProps({
       <div
         class="logo"
         :class="{ 'logo-scrolled': isScrolled }"
-      > <img class="logo" src="/main_logo3.png" alt=""> </div>
+      > <img class="logo" src="/main_logo3.png" alt="Стоматология «Для Вас» — на главную"> </div>
     </NuxtLink>
   </div>
 </template>

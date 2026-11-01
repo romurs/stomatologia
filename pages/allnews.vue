@@ -4,7 +4,7 @@ import type { News } from "~/types/api";
 
 useHead({
   title: "Новости | Стоматология «Для Вас»",
-  meta: [{ name: "allnews", content: "Все новости стоматологии «Для вас»" }],
+  meta: [{ name: "description", content: "Новости стоматологической клиники «Для Вас», Йошкар-Ола." }],
 });
 
 const apiUrl = useApiUrl();

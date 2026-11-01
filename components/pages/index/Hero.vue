@@ -1,4 +1,8 @@
 <script setup lang="ts">
+const { data: reviews } = await useReviews();
+
+const years = new Date().getFullYear() - CLINIC.foundedYear;
+const rating = computed(() => reviews.value.average_rating);
 </script>
 
 <template>
@@ -14,24 +18,24 @@
 
         <div class="hero__actions">
           <NuxtLink to="/booking" class="btn btn-primary">Записаться на приём</NuxtLink>
-          <a href="tel:+78362733333" class="btn btn-outline">Позвонить: 73-33-33</a>
+          <a :href="CLINIC.phone.href" class="btn btn-outline">Позвонить: 73-33-33</a>
         </div>
 
         <ul class="hero__points">
-          <li>✅ Бесплатная консультация при первом визите</li>
+          <li>✅ Бесплатная консультация при первом обращении</li>
           <li>✅ Гарантия на лечение и протезирование</li>
-          <li>✅ Работаем без выходных по будням до 20:00</li>
+          <li>✅ Пн–Пт до 20:00, Сб до 16:00</li>
         </ul>
       </div>
 
       <div class="hero__visual" aria-hidden="true">
-        <div class="hero__visual-card hero__visual-card--rating">
-          <span class="hero__visual-score">4.9</span>
-          <span>рейтинг пациентов</span>
+        <div class="hero__visual-card hero__visual-card--rating" v-if="rating">
+          <span class="hero__visual-score">{{ rating.toFixed(1) }}</span>
+          <span>средняя оценка пациентов</span>
         </div>
         <div class="hero__visual-card hero__visual-card--experience">
-          <span class="hero__visual-score">15+</span>
-          <span>лет клинике</span>
+          <span class="hero__visual-score">{{ years }}</span>
+          <span>{{ plural(years, ["год", "года", "лет"]) }} работы клиники</span>
         </div>
         <div class="hero__blob"></div>
       </div>

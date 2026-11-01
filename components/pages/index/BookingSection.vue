@@ -9,16 +9,15 @@ const route = useRoute();
         <span class="eyebrow">Запись онлайн</span>
         <h2>Запишитесь на приём за 1 минуту</h2>
         <p>
-          Оставьте заявку — администратор перезвонит и подберёт удобное время. Это быстрее, чем ждать ответа в
-          мессенджере, и без очереди в телефонную линию.
+          Оставьте заявку — администратор перезвонит и подберёт удобное время приёма.
         </p>
         <ul class="booking-section__list">
-          <li>📞 Перезвоним в течение рабочего дня</li>
+          <li>📞 Перезвоним в рабочее время клиники</li>
           <li>🕒 Подберём время под ваш график</li>
-          <li>🔒 Не передаём данные третьим лицам</li>
+          <li>🔒 Данные обрабатываются по <NuxtLink to="/privacy">Политике обработки ПДн</NuxtLink></li>
         </ul>
         <p class="booking-section__alt">
-          Или позвоните: <a href="tel:+78362733333">+7 (8362) 73-33-33</a>
+          Или позвоните: <a :href="CLINIC.phone.href">{{ CLINIC.phone.text }}</a>
         </p>
       </div>
 
@@ -69,6 +68,11 @@ const route = useRoute();
   li {
     font-size: 0.92rem;
     color: var(--color-text);
+
+    a {
+      color: var(--color-primary-700);
+      text-decoration: underline;
+    }
   }
 }
 

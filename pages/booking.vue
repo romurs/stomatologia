@@ -25,14 +25,14 @@ const route = useRoute();
         <div class="booking-page__aside">
           <div class="card booking-page__card">
             <h3>Или свяжитесь напрямую</h3>
-            <a href="tel:+78362733333" class="booking-page__contact">📞 +7 (8362) 73-33-33</a>
+            <a :href="CLINIC.phone.href" class="booking-page__contact">📞 {{ CLINIC.phone.text }}</a>
             <!-- <a href="https://wa.me/79027437080" target="_blank" rel="noopener" class="booking-page__contact">💬 WhatsApp</a> -->
-            <p class="booking-page__hours">ПН–ПТ 09:00–20:00, СБ 09:00–16:00, ВС Выходной</p>
+            <p class="booking-page__hours">{{ clinicHoursText() }}</p>
           </div>
 
           <div class="card booking-page__card">
-            <h3>Первый визит бесплатный</h3>
-            <p>Осмотр и консультация с составлением плана лечения не оплачиваются при первом обращении.</p>
+            <h3>Бесплатная первичная консультация</h3>
+            <p>Осмотр и консультация с составлением плана лечения при первом обращении — бесплатно. Лечение оплачивается по прайс-листу.</p>
           </div>
         </div>
       </div>

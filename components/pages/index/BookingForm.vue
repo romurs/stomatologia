@@ -168,10 +168,7 @@ const resetForm = () => {
           <textarea v-model="comment" rows="3" placeholder="Например: болит зуб слева снизу"></textarea>
         </div>
 
-        <label class="booking-form__agree" :class="{ 'field-error': errors.agree }">
-          <input type="checkbox" v-model="agree" />
-          <span>Согласен(а) на обработку персональных данных</span>
-        </label>
+        <ConsentCheckbox v-model="agree" :error="!!errors.agree" />
         <span class="field-error-text" v-if="errors.agree">{{ errors.agree }}</span>
 
         <input
@@ -185,7 +182,7 @@ const resetForm = () => {
         />
 
         <p class="booking-form__submit-error" v-if="submitError">
-          {{ submitError }} <a href="tel:+78362733333">+7 (8362) 73-33-33</a>
+          {{ submitError }} <a :href="CLINIC.phone.href">{{ CLINIC.phone.text }}</a>
         </p>
 
         <button type="submit" class="btn btn-primary btn-block" :disabled="isSubmitting">
@@ -193,7 +190,7 @@ const resetForm = () => {
         </button>
 
         <p class="booking-form__hint">
-          Мы перезвоним, чтобы подтвердить время визита. Заявка не является гарантией записи до подтверждения администратором.
+          Администратор перезвонит, чтобы согласовать время визита. Запись считается подтверждённой после звонка администратора.
         </p>
       </form>
     </div>
@@ -203,7 +200,7 @@ const resetForm = () => {
       <h3>Заявка отправлена</h3>
       <p>
         Спасибо, {{ name }}! Мы свяжемся с вами по номеру {{ phone }} в ближайшее рабочее время, чтобы подтвердить запись.
-        Если у вас срочный случай — позвоните нам: <a href="tel:+78362733333">+7 (8362) 73-33-33</a>.
+        Если у вас срочный случай — позвоните нам: <a :href="CLINIC.phone.href">{{ CLINIC.phone.text }}</a>.
       </p>
       <button class="btn btn-ghost" @click="resetForm">Оставить ещё одну заявку</button>
     </div>

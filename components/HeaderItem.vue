@@ -22,6 +22,18 @@ onBeforeUnmount(() => {
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
+
+const { settings: a11y, panelOpen: a11yPanelOpen, enable: enableA11y } = useAccessibility();
+
+// Первое нажатие включает версию для слабовидящих, повторные — показывают/скрывают панель настроек
+const onA11yClick = () => {
+  if (!a11y.value.enabled) {
+    enableA11y();
+  } else {
+    a11yPanelOpen.value = !a11yPanelOpen.value;
+  }
+  if (isMenuOpen.value) toggleMenu();
+};
 </script>
 
 <template>
@@ -34,7 +46,7 @@ const toggleMenu = () => {
       <NavBtn_mobile value="Документы" link="/documents" :toggleFn="toggleMenu" />
       <NavBtn_mobile value="Контакты" link="/contacts" :toggleFn="toggleMenu" />
       <div class="mobile-menu__cta">
-        <a href="tel:+78362733333" class="mobile-menu__phone">+7 (8362) 73-33-33</a>
+        <a :href="CLINIC.phone.href" class="mobile-menu__phone">{{ CLINIC.phone.text }}</a>
         <NuxtLink to="/booking" class="btn btn-primary btn-block" @click="toggleMenu">Записаться на приём</NuxtLink>
       </div>
     </div>
@@ -54,11 +66,28 @@ const toggleMenu = () => {
         </nav>
 
         <div class="header-cta">
-          <a href="tel:+78362733333" class="header-cta__phone">+7 (8362) 73-33-33</a>
+          <a :href="CLINIC.phone.href" class="header-cta__phone">{{ CLINIC.phone.text }}</a>
           <NuxtLink to="/booking" class="btn btn-primary btn-sm">Записаться</NuxtLink>
         </div>
 
         <BurgerBtn :isMenuOpen="isMenuOpen" :toggleFn="toggleMenu" />
+
+        <button
+          type="button"
+          class="a11y-toggle"
+          :aria-pressed="a11y.enabled"
+          :title="a11y.enabled ? 'Настройки версии для слабовидящих' : 'Версия для слабовидящих'"
+          :aria-label="a11y.enabled ? 'Настройки версии для слабовидящих' : 'Версия для слабовидящих'"
+          @click="onA11yClick"
+        >
+          <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M12 5C6.5 5 2.7 9.4 1.5 11.4a1.2 1.2 0 0 0 0 1.2C2.7 14.6 6.5 19 12 19s9.3-4.4 10.5-6.4a1.2 1.2 0 0 0 0-1.2C21.3 9.4 17.5 5 12 5Zm0 11.5A4.5 4.5 0 1 1 12 7.5a4.5 4.5 0 0 1 0 9Zm0-7a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5Z"
+            />
+          </svg>
+          <span class="a11y-toggle__text">{{ a11y.enabled ? "Настройки" : "Для слабовидящих" }}</span>
+        </button>
       </div>
     </div>
   </header>
@@ -171,6 +200,43 @@ header {
 }
 .header-cta__phone:hover {
   opacity: 0.85;
+}
+
+.a11y-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  margin-left: 16px;
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.24);
+  }
+
+  @media (max-width: 1000px) {
+    margin-left: 4px;
+    padding: 6px;
+    background: none;
+    border: none;
+
+    .a11y-toggle__text {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 1280px) and (min-width: 1001px) {
+  .a11y-toggle__text {
+    display: none;
+  }
 }
 
 .menu-slide-enter-active,

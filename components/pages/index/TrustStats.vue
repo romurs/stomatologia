@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const FOUNDED_YEAR = 2008;
+const FOUNDED_YEAR = CLINIC.foundedYear;
 
 const { data: doctors } = await useDoctors();
 const { data: reviews } = await useReviews();

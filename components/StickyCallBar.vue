@@ -5,7 +5,7 @@
 
 <template>
   <div class="sticky-bar">
-    <a href="tel:+78362733333" class="sticky-bar__item">
+    <a :href="CLINIC.phone.href" class="sticky-bar__item">
       <span class="sticky-bar__icon">📞</span>
       <span>Позвонить</span>
     </a>
