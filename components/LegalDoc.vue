@@ -41,7 +41,7 @@ defineProps<{ title: string }>();
   ol {
     list-style: disc;
     padding-left: 22px;
-    margin: 0 0 10px;
+    margin: 0 15px 10px;
   }
 
   a {
