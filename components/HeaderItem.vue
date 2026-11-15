@@ -54,7 +54,7 @@ const onA11yClick = () => {
 
   <header :class="{ 'header-scrolled': isScrolled }">
     <div class="mainbar">
-      <div class="wrap header-container">
+      <div class="header-container">
         <HeaderLogo :isScrolled="false" />
 
         <nav class="nav-btns">
@@ -166,6 +166,9 @@ header {
   height: 100%;
   display: flex;
   align-items: center;
+  max-width: 1300px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .nav-btns {
@@ -174,7 +177,7 @@ header {
   flex: 1;
   margin-left: 32px;
 
-  @media (max-width: 1080px) {
+  @media (max-width: 1050px) {
     display: none;
   }
 }
@@ -185,11 +188,11 @@ header {
   gap: 16px;
   margin-left: auto;
 
-  @media (max-width: 1080px) {
+  @media (max-width: 1050px) {
     margin-left: auto;
   }
 
-  @media (max-width: 1000px) {
+  @media (max-width: 1050px) {
     display: none;
   }
 }
@@ -221,7 +224,7 @@ header {
     background: rgba(255, 255, 255, 0.24);
   }
 
-  @media (max-width: 1000px) {
+  @media (max-width: 1050px) {
     margin-left: 4px;
     padding: 6px;
     background: none;

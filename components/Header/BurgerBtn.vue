@@ -26,7 +26,7 @@ defineProps({
   border: none;
   display: none;
 
-  @media (max-width: 1000px) {
+  @media (max-width: 1050px) {
     display: block;
   }
 }

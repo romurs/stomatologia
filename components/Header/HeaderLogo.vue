@@ -12,13 +12,13 @@ defineProps({
       <div
         class="logo"
         :class="{ 'logo-scrolled': isScrolled }"
-      > <img class="logo" src="/main_logo3.png" alt="Стоматология «Для Вас» — на главную"> </div>
+      > <img class="logo" src="/main_logo4.png" alt="Стоматология «Для Вас» — на главную"> </div>
     </NuxtLink>
   </div>
 </template>
 
 <style scoped lang="scss">
-@media (min-width: 1000px) {
+@media (min-width: 1050px) {
   .header_logo {
     position: relative;
     align-items: center;
@@ -31,6 +31,7 @@ defineProps({
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
+    max-height: 64px;
     height: 100%;
     width: 100%;
     transition: all 0.3s ease;
@@ -42,7 +43,7 @@ defineProps({
     transition: all 0.3s ease;
   }
 }
-@media (max-width: 1000px) {
+@media (max-width: 1050px) {
   .header_logo {
     position: relative;
     align-items: center;
@@ -54,13 +55,10 @@ defineProps({
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
+    max-height: 64px;
     height: 100%;
-    width: 100%;
+    width: auto;
     transition: all 0.3s ease;
-  }
-
-  .logo_white {
-    background-image: url(/Short_Logo_White.svg);
   }
 }
 </style>
